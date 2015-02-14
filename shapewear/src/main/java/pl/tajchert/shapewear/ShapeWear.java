@@ -1,5 +1,3 @@
-package pl.tajchert.shapewear;
-
 /*
 The MIT License (MIT)
 
@@ -23,7 +21,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
-
+package pl.tajchert.shapewear;
 
 import android.app.Activity;
 import android.view.View;
@@ -99,6 +97,13 @@ public class ShapeWear {
 
     public static void setOnShapeChangeListener(OnShapeChangeListener onShapeChangeListener) {
         ShapeWear.onShapeChangeListener = onShapeChangeListener;
+        if(!getShape().equals(SHAPE_UNSURE) && ShapeWear.onShapeChangeListener != null){
+            try {
+                ShapeWear.onShapeChangeListener.shapeDetected(isRound());
+            } catch (Exception e) {
+                //We checked that with SHAPE_UNSURE already
+            }
+        }
     }
 
     public interface OnShapeChangeListener {
