@@ -42,10 +42,10 @@ public class ShapeWear {
     private static OnShapeChangeListener onShapeChangeListener;
 
     /**
-     * Initialized at any moment of app life cycle to determine screen shape
+     * Initialized to determine screen shape
      * @param view
      */
-    public static void initShapeWear(View view){
+    private static void initShapeDetection(View view){
         view.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
             @Override
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
@@ -64,8 +64,30 @@ public class ShapeWear {
                 return insets;
             }
         });
+    }
 
-        Display display = view.getDisplay();
+    /**
+     * Initialized at any moment of app life cycle to determine screen shape and size
+     * @param activity
+     */
+    public static void initShapeWear(Activity activity){
+        initShapeDetection(activity.getWindow().getDecorView().findViewById(android.R.id.content));
+        WindowManager wm = (WindowManager) activity.getSystemService(Context.WINDOW_SERVICE);
+        getScreenSize(wm);
+    }
+
+    /**
+     * Initialized at any moment of app life cycle to determine screen shape and size
+     * @param context
+     */
+    public static void initShapeWear(Context context){
+        initShapeDetection(((Activity) context).getWindow().getDecorView().findViewById(android.R.id.content));
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        getScreenSize(wm);
+    }
+    
+    private static void getScreenSize(WindowManager wm) {
+        Display display = wm.getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
         screenWidthPX = size.x;
@@ -73,14 +95,6 @@ public class ShapeWear {
         if(onSizeChangeListener != null){
             onSizeChangeListener.sizeDetected(screenWidthPX, screenHeightPX);
         }
-    }
-
-    /**
-     * Initialized at any moment of app life cycle to determine screen shape
-     * @param activity
-     */
-    public static void initShapeWear(Activity activity){
-        initShapeWear(activity.getWindow().getDecorView().findViewById(android.R.id.content));
     }
 
     /**
