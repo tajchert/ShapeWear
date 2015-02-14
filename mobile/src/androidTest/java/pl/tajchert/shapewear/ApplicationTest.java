@@ -1,4 +1,4 @@
-package pl.tajchert.shapewearsample;
+package pl.tajchert.shapewear;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

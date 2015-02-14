@@ -1,10 +1,8 @@
-package pl.tajchert.shapewearsample;
+package pl.tajchert.shapewear;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-
-import pl.tajchert.shapewear.ShapeWear;
 
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";

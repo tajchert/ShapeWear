@@ -24,6 +24,8 @@ SOFTWARE.
 package pl.tajchert.shapewear;
 
 import android.app.Activity;
+import android.graphics.Point;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowInsets;
 
@@ -31,6 +33,10 @@ public class ShapeWear {
     public static final String SHAPE_ROUND = "round";
     public static final String SHAPE_RECTANGLE = "rect";
     public static final String SHAPE_UNSURE = "unsure";
+
+    private static int screenWidthPX = 0;
+    private static int screenHeightPX = 0;
+    private static OnSizeChangeListener onSizeChangeListener;
 
     private static String shape = SHAPE_UNSURE;
     private static OnShapeChangeListener onShapeChangeListener;
@@ -58,6 +64,15 @@ public class ShapeWear {
                 return insets;
             }
         });
+
+        Display display = view.getDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        screenWidthPX = size.x;
+        screenHeightPX = size.y;
+        if(onSizeChangeListener != null){
+            onSizeChangeListener.sizeDetected(screenWidthPX, screenHeightPX);
+        }
     }
 
     /**
@@ -91,6 +106,14 @@ public class ShapeWear {
         return shape;
     }
 
+    public static int getScreenWidthPX() {
+        return screenWidthPX;
+    }
+
+    public static int getScreenHeightPX() {
+        return screenHeightPX;
+    }
+
     public static OnShapeChangeListener getOnShapeChangeListener() {
         return onShapeChangeListener;
     }
@@ -106,7 +129,18 @@ public class ShapeWear {
         }
     }
 
+    public static void setOnSizeChangeListener(OnSizeChangeListener onSizeChangeListener) {
+        ShapeWear.onSizeChangeListener = onSizeChangeListener;
+        if(ShapeWear.onSizeChangeListener != null && screenWidthPX != 0 && screenHeightPX != 0){
+            ShapeWear.onSizeChangeListener.sizeDetected(screenWidthPX, screenHeightPX);
+        }
+    }
+
     public interface OnShapeChangeListener {
         void shapeDetected(boolean isRound);
+    }
+
+    public interface OnSizeChangeListener {
+        void sizeDetected(int widthPx, int heightPx);
     }
 }
