@@ -24,10 +24,12 @@ SOFTWARE.
 package pl.tajchert.shapewear;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Point;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowInsets;
+import android.view.WindowManager;
 
 public class ShapeWear {
     public static final String SHAPE_ROUND = "round";
@@ -57,7 +59,7 @@ public class ShapeWear {
                 if(onShapeChangeListener != null){
                     try {
                         onShapeChangeListener.shapeDetected(isRound());
-                    } catch (Exception e) {
+                    } catch (ScreenShapeNotDetectedException e) {
                         //Do nothing as we just set shape so it is impossible to throw it here
                     }
                 }
@@ -85,7 +87,7 @@ public class ShapeWear {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         getScreenSize(wm);
     }
-    
+
     private static void getScreenSize(WindowManager wm) {
         Display display = wm.getDefaultDisplay();
         Point size = new Point();
@@ -102,9 +104,9 @@ public class ShapeWear {
      * @return boolean is screen is round or not
      * @throws Exception
      */
-    public static boolean isRound() throws Exception {
+    public static boolean isRound() throws ScreenShapeNotDetectedException {
         if(shape == null || shape.equals(SHAPE_UNSURE)){
-            throw new Exception("ShapeWear still doesn't have correct screen shape at this point, subscribe to OnShapeChangeListener or call this method later on. Also you can call getShape() to get String representation, will return SHAPE_UNSURE if not specified.");
+            throw new ScreenShapeNotDetectedException("ShapeWear still doesn't have correct screen shape at this point, subscribe to OnShapeChangeListener or call this method later on. Also you can call getShape() to get String representation, will return SHAPE_UNSURE if not specified.");
         } else if (shape.equals(SHAPE_ROUND)){
             return true;
         } else {
@@ -156,5 +158,14 @@ public class ShapeWear {
 
     public interface OnSizeChangeListener {
         void sizeDetected(int widthPx, int heightPx);
+    }
+
+    public static class ScreenShapeNotDetectedException extends Exception {
+        public ScreenShapeNotDetectedException() {
+        }
+
+        public ScreenShapeNotDetectedException(String detailMessage) {
+            super(detailMessage);
+        }
     }
 }

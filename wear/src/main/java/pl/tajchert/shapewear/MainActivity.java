@@ -3,6 +3,7 @@ package pl.tajchert.shapewear;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 public class MainActivity extends Activity {
     private static final String TAG = "MainActivity";
@@ -50,8 +51,8 @@ public class MainActivity extends Activity {
         try {
             //Would be thrown on first run as shape will be still not detected when calling onResume()
             Log.d(TAG, "onResume shape: " + ShapeWear.isRound());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception from isRound: " + e.getLocalizedMessage());
+        } catch (ShapeWear.ScreenShapeNotDetectedException e) {
+            Log.e(TAG, "ScreenShapeNotDetectedException from isRound: " + e.getMessage());
         }
     }
 }
