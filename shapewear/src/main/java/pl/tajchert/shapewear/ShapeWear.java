@@ -76,4 +76,8 @@ public class ShapeWear {
     public static void setOnShapeChangeListener(OnShapeChangeListener onShapeChangeListener) {
         ShapeWear.onShapeChangeListener = onShapeChangeListener;
     }
+
+    public interface OnShapeChangeListener {
+        void shapeDetected(boolean isRound);
+    }
 }

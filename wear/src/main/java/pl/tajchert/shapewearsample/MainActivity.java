@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 
-import pl.tajchert.shapewear.OnShapeChangeListener;
 import pl.tajchert.shapewear.ShapeWear;
 
 public class MainActivity extends Activity {
@@ -17,7 +16,7 @@ public class MainActivity extends Activity {
         //Would give us wrong result of "getIsRound()", on first run here
 
 
-        ShapeWear.setOnShapeChangeListener(new OnShapeChangeListener() {
+        ShapeWear.setOnShapeChangeListener(new ShapeWear.OnShapeChangeListener() {
             @Override
             public void shapeDetected(boolean isRound) {
                 //There is fine.
