@@ -22,12 +22,12 @@ public class MainActivity extends Activity {
 
         ShapeWear.setOnShapeChangeListener(new ShapeWear.OnShapeChangeListener() {
             @Override
-            public void shapeDetected(boolean isRound) {
+            public void shapeDetected(ShapeWear.ScreenShape screenShape) {
                 //There is fine.
-                Log.d(TAG, "shapeDetected isRound:" + isRound);
+                Log.d(TAG, "shapeDetected isRound:" + screenShape);
                 Log.d(TAG, "shapeDetected getShape:" + ShapeWear.getShape());
                 if(screenShapeText != null) {
-                    screenShapeText.setText("isRound: " + isRound);
+                    screenShapeText.setText("Shape: " + screenShape);
                 }
             }
         });
