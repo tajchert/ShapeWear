@@ -16,8 +16,17 @@ specify listeners such as:
 ```java
 ShapeWear.setOnShapeChangeListener(new ShapeWear.OnShapeChangeListener() {
     @Override
-    public void shapeDetected(boolean isRound) {
-        //Do your stuff here
+    public void shapeDetected(ShapeWear.ScreenShape screenShape) {
+        //Do your stuff here for example:
+        switch (screenShape){
+            case RECTANGLE:
+                break;
+            case ROUND:
+                break;
+            case MOTO_ROUND:
+                //as it is special case of ROUND - cut at the bottom.
+                break;
+        }
     }
 });
 ShapeWear.setOnSizeChangeListener(new ShapeWear.OnSizeChangeListener() {
