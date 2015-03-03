@@ -21,6 +21,29 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+/*
+The MIT License (MIT)
+
+Copyright (c) 2015 Michal Tajchert
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
 package pl.tajchert.shapewear;
 
 import android.app.Activity;
@@ -32,15 +55,13 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 
 public class ShapeWear {
-    public static final String SHAPE_ROUND = "round";
-    public static final String SHAPE_RECTANGLE = "rect";
-    public static final String SHAPE_UNSURE = "unsure";
+    public static enum ScreenShape {ROUND, RECTANGLE, UNDETECTED}
 
     private static int screenWidthPX = 0;
     private static int screenHeightPX = 0;
     private static OnSizeChangeListener onSizeChangeListener;
 
-    private static String shape = SHAPE_UNSURE;
+    private static ScreenShape shape = ScreenShape.UNDETECTED;
     private static OnShapeChangeListener onShapeChangeListener;
 
     /**
@@ -52,9 +73,9 @@ public class ShapeWear {
             @Override
             public WindowInsets onApplyWindowInsets(View v, WindowInsets insets) {
                 if (insets.isRound()) {
-                    shape = SHAPE_ROUND;
+                    shape = ScreenShape.ROUND;
                 } else {
-                    shape = SHAPE_RECTANGLE;
+                    shape = ScreenShape.RECTANGLE;
                 }
                 if(onShapeChangeListener != null){
                     try {
@@ -105,9 +126,9 @@ public class ShapeWear {
      * @throws Exception
      */
     public static boolean isRound() throws ScreenShapeNotDetectedException {
-        if(shape == null || shape.equals(SHAPE_UNSURE)){
+        if(shape == null || shape.equals(ScreenShape.UNDETECTED)){
             throw new ScreenShapeNotDetectedException("ShapeWear still doesn't have correct screen shape at this point, subscribe to OnShapeChangeListener or call this method later on. Also you can call getShape() to get String representation, will return SHAPE_UNSURE if not specified.");
-        } else if (shape.equals(SHAPE_ROUND)){
+        } else if (shape.equals(ScreenShape.ROUND)){
             return true;
         } else {
             return false;
@@ -115,10 +136,10 @@ public class ShapeWear {
     }
 
     /**
-     * Safe-proof method, but will return SHAPE_UNSURE instead of throwing Exception.
+     * Safe-proof method, but will return ScreenShape.UNDETECTED instead of throwing Exception.
      * @return String name of screen type
      */
-    public static String getShape(){
+    public static ScreenShape getShape(){
         return shape;
     }
 
@@ -136,11 +157,11 @@ public class ShapeWear {
 
     public static void setOnShapeChangeListener(OnShapeChangeListener onShapeChangeListener) {
         ShapeWear.onShapeChangeListener = onShapeChangeListener;
-        if(!getShape().equals(SHAPE_UNSURE) && ShapeWear.onShapeChangeListener != null){
+        if(!getShape().equals(ScreenShape.UNDETECTED) && ShapeWear.onShapeChangeListener != null){
             try {
                 ShapeWear.onShapeChangeListener.shapeDetected(isRound());
             } catch (Exception e) {
-                //We checked that with SHAPE_UNSURE already
+                //We checked that with ScreenShape.UNDETECTED already
             }
         }
     }
@@ -169,3 +190,4 @@ public class ShapeWear {
         }
     }
 }
+
